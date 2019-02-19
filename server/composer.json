@@ -6,7 +6,8 @@
     },
     "require": {
         "php": "^7.3",
-        "doctrine/orm": "^2.6"
+        "doctrine/orm": "^2.6",
+        "php-di/php-di": "^6.0"
         
     },
     "require-dev": {

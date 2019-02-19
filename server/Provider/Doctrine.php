@@ -3,11 +3,11 @@
 namespace Api\Provider;
 
 use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Cache\FilesystemCache;
+// use Doctrine\Common\Cache\FilesystemCache;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Mapping\Driver\AnnotationDriver;
 use Doctrine\ORM\Tools\Setup;
+use Api\Settings;
 
 /**
  * Initizalize doctrine class
@@ -19,27 +19,29 @@ class Doctrine
      *
      * @param array $settings
      */
-    public function __construct(array $settings)
+    public function __construct(Settings $settings)
     {
-        $config = Setup::createAnnotationMetadataConfiguration(
-            $settings['doctrine']['metadata_dirs'],
-            $settings['doctrine']['dev_mode']
+        $config = $settings->get('doctrine');
+
+        $doctrine = Setup::createAnnotationMetadataConfiguration(
+            $config['metadata_dirs'],
+            $config['dev_mode']
         );
-        $config->setMetadataDriverImpl(
+        $doctrine->setMetadataDriverImpl(
             new AnnotationDriver(
                 new AnnotationReader,
-                $settings['doctrine']['metadata_dirs']
+                $config['metadata_dirs']
             )
         );
-        // $config->setMetadataCacheImpl(
+        // $doctrine->setMetadataCacheImpl(
         //     new FilesystemCache(
-        //         $settings['doctrine']['cache_dir']
+        //         $config['cache_dir']
         //     )
         // );
 
         return EntityManager::create(
-            $settings['doctrine']['connection'],
-            $config
+            $config['connection'],
+            $doctrine
         );
     }
 }

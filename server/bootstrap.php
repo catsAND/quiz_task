@@ -7,11 +7,8 @@ ini_set('display_errors', '1');
 
 require './vendor/autoload.php';
 
-use Api\Settings;
-use Api\Provider\Doctrine;
+use DI\Container;
 
-define('APP_ROOT', __DIR__);
+$container = new Container();
 
-$settings = new Settings();
-
-$em = new Doctrine($settings->get('doctrine'));
+return $container;
