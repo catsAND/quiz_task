@@ -3,6 +3,7 @@
 namespace Api;
 
 use Api\Exception\SettingsException;
+use Api\Controller\{Ping};
 
 /**
  * Store all settings
@@ -28,6 +29,18 @@ class Settings
                 'user' => 'admin',
                 'password' => 'admin',
             ]
+        ];
+    }
+
+    /**
+     * Route settings
+     *
+     * @return array
+     */
+    protected function getRouteSettings() : array
+    {
+        return [
+            ['GET', '/ping', Ping::class],
         ];
     }
 
