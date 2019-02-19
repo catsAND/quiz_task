@@ -14,6 +14,7 @@ use Api\Settings;
  */
 class Doctrine
 {
+    protected $em;
     /**
      * Initialize doctrine
      *
@@ -39,9 +40,14 @@ class Doctrine
         //     )
         // );
 
-        return EntityManager::create(
+        $this->em = EntityManager::create(
             $config['connection'],
             $doctrine
         );
+    }
+
+    public function getEntityManager()
+    {
+        return $this->em;
     }
 }

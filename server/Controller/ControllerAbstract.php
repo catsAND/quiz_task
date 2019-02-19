@@ -2,7 +2,7 @@
 
 namespace Api\Controller;
 
-use Api\Provider\Doctrine;
+use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 
 abstract class ControllerAbstract
@@ -10,11 +10,9 @@ abstract class ControllerAbstract
     protected $em;
     protected $request;
 
-    public function __construct(Doctrine $em, Request $request)
+    public function __construct(EntityManager $em, Request $request)
     {
         $this->em = $em;
         $this->request = $request;
     }
-
-    abstract public function execute($vars);
 }
