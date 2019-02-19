@@ -1,13 +1,13 @@
 <?php
 
-
+namespace Api\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * QuizAnswers
  *
- * @ORM\Table(name="quiz_answers", indexes={@ORM\Index(name="idx1", columns={"question_id"}), @ORM\Index(name="idx2", columns={"active"})})
+ * @ORM\Table(name="quiz_answers", indexes={@ORM\Index(name="idx2", columns={"active"}), @ORM\Index(name="idx1", columns={"question_id"})})
  * @ORM\Entity
  */
 class QuizAnswers
@@ -43,11 +43,11 @@ class QuizAnswers
     private $correct = '0';
 
     /**
-     * @var \QuizQuestions
+     * @var \Api\Entity\QuizQuestions
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="QuizQuestions")
+     * @ORM\OneToOne(targetEntity="Api\Entity\QuizQuestions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      * })
@@ -57,7 +57,7 @@ class QuizAnswers
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="QuizUsers", mappedBy="answer")
+     * @ORM\ManyToMany(targetEntity="Api\Entity\QuizUsers", mappedBy="answer")
      */
     private $user;
 
@@ -168,11 +168,11 @@ class QuizAnswers
     /**
      * Set question.
      *
-     * @param \QuizQuestions $question
+     * @param \Api\Entity\QuizQuestions $question
      *
      * @return QuizAnswers
      */
-    public function setQuestion(\QuizQuestions $question)
+    public function setQuestion(\Api\Entity\QuizQuestions $question)
     {
         $this->question = $question;
 
@@ -182,7 +182,7 @@ class QuizAnswers
     /**
      * Get question.
      *
-     * @return \QuizQuestions
+     * @return \Api\Entity\QuizQuestions
      */
     public function getQuestion()
     {
@@ -192,11 +192,11 @@ class QuizAnswers
     /**
      * Add user.
      *
-     * @param \QuizUsers $user
+     * @param \Api\Entity\QuizUsers $user
      *
      * @return QuizAnswers
      */
-    public function addUser(\QuizUsers $user)
+    public function addUser(\Api\Entity\QuizUsers $user)
     {
         $this->user[] = $user;
 
@@ -206,11 +206,11 @@ class QuizAnswers
     /**
      * Remove user.
      *
-     * @param \QuizUsers $user
+     * @param \Api\Entity\QuizUsers $user
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeUser(\QuizUsers $user)
+    public function removeUser(\Api\Entity\QuizUsers $user)
     {
         return $this->user->removeElement($user);
     }

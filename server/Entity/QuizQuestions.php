@@ -1,13 +1,13 @@
 <?php
 
-
+namespace Api\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * QuizQuestions
  *
- * @ORM\Table(name="quiz_questions", indexes={@ORM\Index(name="idx2", columns={"active"}), @ORM\Index(name="idx3", columns={"weight"}), @ORM\Index(name="idx1", columns={"quiz_id"})})
+ * @ORM\Table(name="quiz_questions", indexes={@ORM\Index(name="idx3", columns={"weight"}), @ORM\Index(name="idx1", columns={"quiz_id"}), @ORM\Index(name="idx2", columns={"active"})})
  * @ORM\Entity
  */
 class QuizQuestions
@@ -43,9 +43,9 @@ class QuizQuestions
     private $active = '1';
 
     /**
-     * @var \QuizList
+     * @var \Api\Entity\QuizList
      *
-     * @ORM\ManyToOne(targetEntity="QuizList")
+     * @ORM\ManyToOne(targetEntity="Api\Entity\QuizList")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="quiz_id", referencedColumnName="id")
      * })
@@ -138,11 +138,11 @@ class QuizQuestions
     /**
      * Set quiz.
      *
-     * @param \QuizList|null $quiz
+     * @param \Api\Entity\QuizList|null $quiz
      *
      * @return QuizQuestions
      */
-    public function setQuiz(\QuizList $quiz = null)
+    public function setQuiz(\Api\Entity\QuizList $quiz = null)
     {
         $this->quiz = $quiz;
 
@@ -152,7 +152,7 @@ class QuizQuestions
     /**
      * Get quiz.
      *
-     * @return \QuizList|null
+     * @return \Api\Entity\QuizList|null
      */
     public function getQuiz()
     {

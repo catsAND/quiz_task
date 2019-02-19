@@ -1,6 +1,6 @@
 <?php
 
-
+namespace Api\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,11 +29,11 @@ class QuizAnswersTrans
     private $answer;
 
     /**
-     * @var \QuizQuestions
+     * @var \Api\Entity\QuizQuestions
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="QuizQuestions")
+     * @ORM\OneToOne(targetEntity="Api\Entity\QuizQuestions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="question_id", referencedColumnName="id")
      * })
@@ -41,11 +41,11 @@ class QuizAnswersTrans
     private $question;
 
     /**
-     * @var \QuizAnswers
+     * @var \Api\Entity\QuizAnswers
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="QuizAnswers")
+     * @ORM\OneToOne(targetEntity="Api\Entity\QuizAnswers")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="id")
      * })
@@ -104,11 +104,11 @@ class QuizAnswersTrans
     /**
      * Set question.
      *
-     * @param \QuizQuestions $question
+     * @param \Api\Entity\QuizQuestions $question
      *
      * @return QuizAnswersTrans
      */
-    public function setQuestion(\QuizQuestions $question)
+    public function setQuestion(\Api\Entity\QuizQuestions $question)
     {
         $this->question = $question;
 
@@ -118,7 +118,7 @@ class QuizAnswersTrans
     /**
      * Get question.
      *
-     * @return \QuizQuestions
+     * @return \Api\Entity\QuizQuestions
      */
     public function getQuestion()
     {
@@ -128,11 +128,11 @@ class QuizAnswersTrans
     /**
      * Set id.
      *
-     * @param \QuizAnswers $id
+     * @param \Api\Entity\QuizAnswers $id
      *
      * @return QuizAnswersTrans
      */
-    public function setId(\QuizAnswers $id)
+    public function setId(\Api\Entity\QuizAnswers $id)
     {
         $this->id = $id;
 
@@ -142,7 +142,7 @@ class QuizAnswersTrans
     /**
      * Get id.
      *
-     * @return \QuizAnswers
+     * @return \Api\Entity\QuizAnswers
      */
     public function getId()
     {

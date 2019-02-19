@@ -1,6 +1,6 @@
 <?php
 
-
+namespace Api\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,11 +29,11 @@ class QuizListTrans
     private $quiz;
 
     /**
-     * @var \QuizList
+     * @var \Api\Entity\QuizList
      *
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\OneToOne(targetEntity="QuizList")
+     * @ORM\OneToOne(targetEntity="Api\Entity\QuizList")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="id", referencedColumnName="id")
      * })
@@ -92,11 +92,11 @@ class QuizListTrans
     /**
      * Set id.
      *
-     * @param \QuizList $id
+     * @param \Api\Entity\QuizList $id
      *
      * @return QuizListTrans
      */
-    public function setId(\QuizList $id)
+    public function setId(\Api\Entity\QuizList $id)
     {
         $this->id = $id;
 
@@ -106,7 +106,7 @@ class QuizListTrans
     /**
      * Get id.
      *
-     * @return \QuizList
+     * @return \Api\Entity\QuizList
      */
     public function getId()
     {

@@ -1,6 +1,6 @@
 <?php
 
-
+namespace Api\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
@@ -50,9 +50,9 @@ class QuizUsers
     private $finishDate = '0000-00-00 00:00:00';
 
     /**
-     * @var \QuizList
+     * @var \Api\Entity\QuizList
      *
-     * @ORM\ManyToOne(targetEntity="QuizList")
+     * @ORM\ManyToOne(targetEntity="Api\Entity\QuizList")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="quiz_id", referencedColumnName="id")
      * })
@@ -62,7 +62,7 @@ class QuizUsers
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="QuizAnswers", inversedBy="user")
+     * @ORM\ManyToMany(targetEntity="Api\Entity\QuizAnswers", inversedBy="user")
      * @ORM\JoinTable(name="quiz_users_answers",
      *   joinColumns={
      *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
@@ -191,11 +191,11 @@ class QuizUsers
     /**
      * Set quiz.
      *
-     * @param \QuizList|null $quiz
+     * @param \Api\Entity\QuizList|null $quiz
      *
      * @return QuizUsers
      */
-    public function setQuiz(\QuizList $quiz = null)
+    public function setQuiz(\Api\Entity\QuizList $quiz = null)
     {
         $this->quiz = $quiz;
 
@@ -205,7 +205,7 @@ class QuizUsers
     /**
      * Get quiz.
      *
-     * @return \QuizList|null
+     * @return \Api\Entity\QuizList|null
      */
     public function getQuiz()
     {
@@ -215,11 +215,11 @@ class QuizUsers
     /**
      * Add answer.
      *
-     * @param \QuizAnswers $answer
+     * @param \Api\Entity\QuizAnswers $answer
      *
      * @return QuizUsers
      */
-    public function addAnswer(\QuizAnswers $answer)
+    public function addAnswer(\Api\Entity\QuizAnswers $answer)
     {
         $this->answer[] = $answer;
 
@@ -229,11 +229,11 @@ class QuizUsers
     /**
      * Remove answer.
      *
-     * @param \QuizAnswers $answer
+     * @param \Api\Entity\QuizAnswers $answer
      *
      * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
      */
-    public function removeAnswer(\QuizAnswers $answer)
+    public function removeAnswer(\Api\Entity\QuizAnswers $answer)
     {
         return $this->answer->removeElement($answer);
     }
