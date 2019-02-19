@@ -40,7 +40,7 @@ class Settings
     protected function getRouteSettings() : array
     {
         return [
-            ['GET', '/ping', Ping::class],
+            ['GET', '/ping', [Ping::class, 'execute']],
         ];
     }
 
