@@ -4,9 +4,17 @@ namespace Api;
 
 use Api\Exception\SettingsException;
 
+/**
+ * Store all settings
+ */
 class Settings
 {
-    protected function getDoctrineSettings()
+    /**
+     * Settings that require doctrine
+     *
+     * @return array
+     */
+    protected function getDoctrineSettings() : array
     {
         return [
             'dev_mode' => true,
@@ -23,7 +31,15 @@ class Settings
         ];
     }
 
-    public function __call($name, $arguments)
+    /**
+     * Magic method calling function that contain settings
+     *
+     * @param string $name
+     * @param array $arguments
+     *
+     * @return array
+     */
+    public function __call(string $name, array $arguments) : array
     {
         $methodName = 'get' . ucfirst($arguments[0]) . 'Settings';
         if ($name != 'get' || !method_exists($this, $methodName)) {
