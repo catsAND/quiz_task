@@ -5,12 +5,12 @@ namespace Api\Provider;
 use function FastRoute\simpleDispatcher;
 use FastRoute\{Dispatcher, RouteCollector};
 use DI\Container;
-use Symfony\Component\HttpFoundation\{Request, Response};
+use Symfony\Component\HttpFoundation\{Request, JsonResponse};
 use Api\Settings;
 
 class Route
 {
-    public function __construct(Container $cnt, Request $request, Response $response, Settings $settings)
+    public function __construct(Container $cnt, Request $request, Settings $settings)
     {
         $config = $settings->get('route');
 
@@ -25,11 +25,13 @@ class Route
         $routeInfo = $dispatcher->dispatch($request->getMethod(), $request->getPathInfo());
         switch ($routeInfo[0]) {
             case Dispatcher::NOT_FOUND:
-                // ... 404 Not Found
+                $response = new JsonResponse(['code' => JsonResponse::HTTP_NOT_FOUND]);
+                $response->send();
                 break;
             case Dispatcher::METHOD_NOT_ALLOWED:
                 $allowedMethods = $routeInfo[1];
-                // ... 405 Method Not Allowed
+                $response = new JsonResponse(['code' => JsonResponse::HTTP_METHOD_NOT_ALLOWED]);
+                $response->send();
                 break;
             case Dispatcher::FOUND:
                 $className = $routeInfo[1][0];

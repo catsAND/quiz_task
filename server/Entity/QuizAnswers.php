@@ -54,20 +54,6 @@ class QuizAnswers
      */
     private $question;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Api\Entity\QuizUsers", mappedBy="answer")
-     */
-    private $user;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->user = new \Doctrine\Common\Collections\ArrayCollection();
-    }
 
     /**
      * Set id.
@@ -187,41 +173,5 @@ class QuizAnswers
     public function getQuestion()
     {
         return $this->question;
-    }
-
-    /**
-     * Add user.
-     *
-     * @param \Api\Entity\QuizUsers $user
-     *
-     * @return QuizAnswers
-     */
-    public function addUser(\Api\Entity\QuizUsers $user)
-    {
-        $this->user[] = $user;
-
-        return $this;
-    }
-
-    /**
-     * Remove user.
-     *
-     * @param \Api\Entity\QuizUsers $user
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeUser(\Api\Entity\QuizUsers $user)
-    {
-        return $this->user->removeElement($user);
-    }
-
-    /**
-     * Get user.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getUser()
-    {
-        return $this->user;
     }
 }

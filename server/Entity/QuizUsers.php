@@ -17,7 +17,7 @@ class QuizUsers
      *
      * @ORM\Column(name="id", type="string", length=16, nullable=false, options={"fixed"=true,"comment"="user id"})
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
@@ -60,26 +60,17 @@ class QuizUsers
     private $quiz;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * Set id.
      *
-     * @ORM\ManyToMany(targetEntity="Api\Entity\QuizAnswers", inversedBy="user")
-     * @ORM\JoinTable(name="quiz_users_answers",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="answer_id", referencedColumnName="id")
-     *   }
-     * )
+     * @param string $id
+     *
+     * @return QuizUsers
      */
-    private $answer;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
+    public function setId($id)
     {
-        $this->answer = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->id = $id;
+
+        return $this;
     }
 
     /**
@@ -210,41 +201,5 @@ class QuizUsers
     public function getQuiz()
     {
         return $this->quiz;
-    }
-
-    /**
-     * Add answer.
-     *
-     * @param \Api\Entity\QuizAnswers $answer
-     *
-     * @return QuizUsers
-     */
-    public function addAnswer(\Api\Entity\QuizAnswers $answer)
-    {
-        $this->answer[] = $answer;
-
-        return $this;
-    }
-
-    /**
-     * Remove answer.
-     *
-     * @param \Api\Entity\QuizAnswers $answer
-     *
-     * @return boolean TRUE if this collection contained the specified element, FALSE otherwise.
-     */
-    public function removeAnswer(\Api\Entity\QuizAnswers $answer)
-    {
-        return $this->answer->removeElement($answer);
-    }
-
-    /**
-     * Get answer.
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getAnswer()
-    {
-        return $this->answer;
     }
 }

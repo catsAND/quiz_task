@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * QuizAnswersTrans
  *
- * @ORM\Table(name="quiz_answers_trans", indexes={@ORM\Index(name="FK_quiz_answers_trans_quiz_questions", columns={"question_id"}), @ORM\Index(name="IDX_2A44497FBF396750", columns={"id"})})
+ * @ORM\Table(name="quiz_answers_trans", indexes={@ORM\Index(name="idx1", columns={"question_id"}), @ORM\Index(name="IDX_2A44497FBF396750", columns={"id"})})
  * @ORM\Entity
  */
 class QuizAnswersTrans
