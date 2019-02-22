@@ -5,16 +5,29 @@ namespace Api\Controller;
 use Doctrine\ORM\EntityManager;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * Main class that extends every controller
+ */
 abstract class ControllerAbstract
 {
+    /**
+     * Entity manager
+     *
+     * @var EntityManager
+     */
     protected $em;
+    /**
+     * Request class
+     *
+     * @var Request
+     */
     protected $request;
 
     /**
      * Construct for controllers
      *
-     * @param EntityManager $em
-     * @param Request $request
+     * @param EntityManager $em      entity manager
+     * @param Request       $request request
      */
     public function __construct(EntityManager $em, Request $request)
     {

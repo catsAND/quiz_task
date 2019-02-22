@@ -8,13 +8,23 @@ use DI\Container;
 use Symfony\Component\HttpFoundation\{Request, JsonResponse};
 use Api\Settings;
 
+/**
+ * Provider for routing
+ */
 class Route
 {
+    /**
+     * Initialize route
+     *
+     * @param Container $cnt      container object
+     * @param Request   $request  request object
+     * @param Settings  $settings settings object
+     */
     public function __construct(Container $cnt, Request $request, Settings $settings)
     {
         $config = $settings->get('route');
 
-        $dispatcher = simpleDispatcher(function(RouteCollector $r) use ($config) {
+        $dispatcher = simpleDispatcher(function (RouteCollector $r) use ($config) {
             $r->addGroup('/api', function (RouteCollector $r) use ($config) {
                 foreach ($config as $route) {
                     $r->addRoute($route[0], $route[1], $route[2]);

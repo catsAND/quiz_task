@@ -66,8 +66,8 @@ class Settings
     /**
      * Magic method calling function that contain settings
      *
-     * @param string $name
-     * @param array $arguments
+     * @param string $name      get
+     * @param array  $arguments config name
      *
      * @return array
      */

@@ -18,7 +18,7 @@ class Doctrine
     /**
      * Initialize doctrine
      *
-     * @param array $settings
+     * @param Settings $settings Settings object
      */
     public function __construct(Settings $settings)
     {
@@ -46,6 +46,11 @@ class Doctrine
         );
     }
 
+    /**
+     * Get entity manager
+     *
+     * @return EntityManager
+     */
     public function getEntityManager()
     {
         return $this->em;

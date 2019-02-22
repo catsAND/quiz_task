@@ -16,6 +16,9 @@ use Api\Entity\{
 };
 use Doctrine\ORM\Query\Expr\Join;
 
+/**
+ * Controller for quiz calls
+ */
 class Quiz extends ControllerAbstract
 {
     /**
@@ -44,7 +47,7 @@ class Quiz extends ControllerAbstract
      * Route /quiz/list controller
      * Get active quiz list
      *
-     * @param array $vars
+     * @param array $vars named parametrs
      *
      * @return JsonResponse
      */
@@ -66,7 +69,7 @@ class Quiz extends ControllerAbstract
     /**
      * Get quiz by id
      *
-     * @param string $id
+     * @param string $id quiz id
      *
      * @return QuizList|null
      */
@@ -79,6 +82,8 @@ class Quiz extends ControllerAbstract
 
     /**
      * Get active quiz list
+     *
+     * @param string $id quiz id
      *
      * @return array
      */
@@ -99,17 +104,31 @@ class Quiz extends ControllerAbstract
     /**
      * Get active answers list by question id
      *
+     * @param string $id question id
+     *
      * @return array
      */
     protected function getActiveAnswerByQuestionId(string $id) : array
     {
-        $qb = $this->em->getRepository(QuizAnswers::class)
+        $qb = $this->em
+            ->getRepository(QuizAnswers::class)
             ->createQueryBuilder('qa');
-        $query = $qb->select('qa.id, qat.answer')
-            ->innerJoin(QuizAnswersTrans::class, 'qat', JOIN::WITH, $qb->expr()->andX(
-                $qb->expr()->eq('qat.id', 'qa.id'),
-                $qb->expr()->eq('qat.question', 'qa.question')
-            ))
+        $query = $qb
+            ->select('qa.id, qat.answer')
+            ->innerJoin(
+                QuizAnswersTrans::class,
+                'qat',
+                JOIN::WITH,
+                $qb
+                    ->expr()->andX(
+                        $qb
+                            ->expr()
+                            ->eq('qat.id', 'qa.id'),
+                        $qb
+                            ->expr()
+                            ->eq('qat.question', 'qa.question')
+                    )
+            )
             ->where('qa.question = :id', 'qat.lang = \'en\'', 'qa.active = :active')
             ->orderBy('qat.id', 'ASC')
             ->setParameter('id', $id)
@@ -123,7 +142,7 @@ class Quiz extends ControllerAbstract
      * Route /quiz/id/list controller
      * Get all questions and answers for quiz
      *
-     * @param array $vars
+     * @param array $vars named parameters
      *
      * @return JsonResponse
      */
@@ -210,9 +229,9 @@ class Quiz extends ControllerAbstract
     }
 
     /**
-     * Get quiz by id
+     * Get user by id
      *
-     * @param string $id
+     * @param string $id user id
      *
      * @return QuizUsers|null
      */
@@ -225,7 +244,7 @@ class Quiz extends ControllerAbstract
     /**
      * Get active question list
      *
-     * @param string $id
+     * @param string $id question id
      *
      * @return QuizQuestions|null
      */
@@ -238,8 +257,8 @@ class Quiz extends ControllerAbstract
     /**
      * Get active answer by id
      *
-     * @param string $id
-     * @param string $qid
+     * @param string $id  answer id
+     * @param string $qid question id
      *
      * @return QuizAnswers|null
      */
@@ -296,7 +315,7 @@ class Quiz extends ControllerAbstract
     /**
      * Get question count by quiz id
      *
-     * @param QuizList $quiz
+     * @param QuizList $quiz quiz object
      *
      * @return integer
      */
@@ -309,7 +328,7 @@ class Quiz extends ControllerAbstract
     /**
      * Get all answered question by user id
      *
-     * @param QuizUsers $user
+     * @param QuizUsers $user user object
      *
      * @return array
      */
@@ -322,8 +341,8 @@ class Quiz extends ControllerAbstract
     /**
      * Check if answer is correct
      *
-     * @param integer $id
-     * @param string $questionId
+     * @param integer $id         answer id
+     * @param string  $questionId question id
      *
      * @return boolean
      */
@@ -337,7 +356,7 @@ class Quiz extends ControllerAbstract
      * Route /quiz/result controller
      * Get result for quiz
      *
-     * @param array $vars
+     * @param array $vars named parameters
      *
      * @return JsonResponse
      */
