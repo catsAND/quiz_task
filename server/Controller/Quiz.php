@@ -19,6 +19,11 @@ use Doctrine\ORM\Query\Expr\Join;
 class Quiz extends ControllerAbstract
 {
     /**
+     * Active status value
+     */
+    protected const STATUS_ACTIVE = '1';
+
+    /**
      * Get active quiz list
      *
      * @return array
@@ -28,7 +33,8 @@ class Quiz extends ControllerAbstract
         $query = $this->em->getRepository(QuizListTrans::class)
             ->createQueryBuilder('ql')
             ->innerJoin(QuizList::class, 'q', JOIN::WITH, 'q.id = ql.id')
-            ->where('q.active = \'1\'', 'ql.lang = \'en\'')
+            ->where('q.active = :active', 'ql.lang = \'en\'')
+            ->setParameter('active', self::STATUS_ACTIVE)
             ->getQuery();
 
         return $query->getResult();
@@ -68,7 +74,7 @@ class Quiz extends ControllerAbstract
     {
 
         return $this->em->getRepository(QuizList::class)
-            ->findOneBy(['id' => $id, 'active' => '1']);
+            ->findOneBy(['id' => $id, 'active' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -81,9 +87,10 @@ class Quiz extends ControllerAbstract
         $query = $this->em->getRepository(QuizQuestionsTrans::class)
             ->createQueryBuilder('qqt')
             ->innerJoin(QuizQuestions::class, 'qq', JOIN::WITH, 'qq.id = qqt.id')
-            ->where('qq.quiz = :id', 'qq.active = \'1\'', 'qqt.lang = \'en\'')
+            ->where('qq.quiz = :id', 'qq.active = :active', 'qqt.lang = \'en\'')
             ->orderBy('qq.weight', 'DESC')
             ->setParameter('id', $id)
+            ->setParameter('active', self::STATUS_ACTIVE)
             ->getQuery();
 
         return $query->getResult();
@@ -103,9 +110,10 @@ class Quiz extends ControllerAbstract
                 $qb->expr()->eq('qat.id', 'qa.id'),
                 $qb->expr()->eq('qat.question', 'qa.question')
             ))
-            ->where('qa.question = :id', 'qat.lang = \'en\'', 'qa.active = \'1\'')
+            ->where('qa.question = :id', 'qat.lang = \'en\'', 'qa.active = :active')
             ->orderBy('qat.id', 'ASC')
             ->setParameter('id', $id)
+            ->setParameter('active', self::STATUS_ACTIVE)
             ->getQuery();
 
         return $query->getResult();
@@ -169,9 +177,10 @@ class Quiz extends ControllerAbstract
         $vars = $this->request->request->all();
         $id = $this->getActiveQuizById($vars['quiz']);
         $ip = $this->request->getClientIp();
+        $uid = $this->generateId();
 
         $user = new QuizUsers();
-        $user->setId($this->generateId());
+        $user->setId($uid);
         $user->setName($vars['name']);
         $user->setQuiz($id);
         $user->setIp($ip);
@@ -186,7 +195,7 @@ class Quiz extends ControllerAbstract
             return $response->send();
         }
 
-        $response = new JsonResponse(['code' => JsonResponse::HTTP_OK]);
+        $response = new JsonResponse(['code' => JsonResponse::HTTP_OK, 'data' => ['id' => $uid]]);
         return $response->send();
     }
 
@@ -213,7 +222,7 @@ class Quiz extends ControllerAbstract
     protected function getActiveQuestionById(string $id) : ? QuizQuestions
     {
         return $this->em->getRepository(QuizQuestions::class)
-            ->findOneBy(['id' => $id, 'active' => '1']);
+            ->findOneBy(['id' => $id, 'active' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -227,7 +236,7 @@ class Quiz extends ControllerAbstract
     protected function getActiveAnswerById(string $id, string $qid) : ? QuizAnswers
     {
         return $this->em->getRepository(QuizAnswers::class)
-            ->findOneBy(['id' => $id, 'question' => $qid, 'active' => '1']);
+            ->findOneBy(['id' => $id, 'question' => $qid, 'active' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -284,7 +293,7 @@ class Quiz extends ControllerAbstract
     protected function getQuestionCountByQuiz(QuizList $quiz) : int
     {
         return $this->em->getRepository(QuizQuestions::class)
-            ->count(['quiz' => $quiz->getId(), 'active' => '1']);
+            ->count(['quiz' => $quiz->getId(), 'active' => self::STATUS_ACTIVE]);
     }
 
     /**
@@ -311,7 +320,7 @@ class Quiz extends ControllerAbstract
     protected function checkIfAnswerCorrect(int $id, string $questionId) : bool
     {
         return $this->em->getRepository(QuizAnswers::class)
-            ->count(['id' => $id, 'question' => $questionId, 'active' => 1, 'correct' => 1]) > 0;
+            ->count(['id' => $id, 'question' => $questionId, 'active' => self::STATUS_ACTIVE, 'correct' => 1]) > 0;
     }
 
     /**
@@ -333,6 +342,15 @@ class Quiz extends ControllerAbstract
 
         $questionCount = $this->getQuestionCountByQuiz($user->getQuiz());
 
+        $defaultDate = new \DateTime('1970-01-02');
+        if ($user->getFinishDate() > $defaultDate) {
+            $response = new JsonResponse(['code' => JsonResponse::HTTP_OK, 'data' => [
+                'name' => $user->getName(),
+                'question' => $questionCount,
+                'correct' => $user->getCorrected(),
+            ]]);
+        }
+
         $answered = $this->getAnsweredQuestionByUser($user);
         if (count($answered) !== $questionCount) {
             return $badResponse->send();
@@ -344,6 +362,17 @@ class Quiz extends ControllerAbstract
             if ($checkCorrect) {
                 $qty += 1;
             }
+        }
+
+        $user->setCorrected($qty);
+        $user->setFinishDate(new \DateTime());
+
+        try {
+            $this->em->merge($user);
+            $this->em->flush();
+        } catch (\Exception $e) {
+            $response = new JsonResponse(['code' => JsonResponse::HTTP_BAD_REQUEST]);
+            return $response->send();
         }
 
         $response = new JsonResponse(['code' => JsonResponse::HTTP_OK, 'data' => [

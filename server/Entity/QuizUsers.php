@@ -50,6 +50,13 @@ class QuizUsers
     private $finishDate = '0000-00-00 00:00:00';
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="corrected", type="smallint", nullable=false, options={"unsigned"=true,"comment"="corrected answer count"})
+     */
+    private $corrected = '0';
+
+    /**
      * @var \Api\Entity\QuizList
      *
      * @ORM\ManyToOne(targetEntity="Api\Entity\QuizList")
@@ -177,6 +184,30 @@ class QuizUsers
     public function getFinishDate()
     {
         return $this->finishDate;
+    }
+
+    /**
+     * Set corrected.
+     *
+     * @param int $corrected
+     *
+     * @return QuizUsers
+     */
+    public function setCorrected($corrected)
+    {
+        $this->corrected = $corrected;
+
+        return $this;
+    }
+
+    /**
+     * Get corrected.
+     *
+     * @return int
+     */
+    public function getCorrected()
+    {
+        return $this->corrected;
     }
 
     /**

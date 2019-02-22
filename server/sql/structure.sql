@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `quiz_answers` (
   KEY `idx1` (`question_id`),
   KEY `idx2` (`active`),
   CONSTRAINT `FK_quiz_answers_quiz_questions` FOREIGN KEY (`question_id`) REFERENCES `quiz_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Questions for tests';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Questions for tests';
 
 DROP TABLE IF EXISTS `quiz_answers_trans`;
 CREATE TABLE IF NOT EXISTS `quiz_answers_trans` (
@@ -59,10 +59,10 @@ CREATE TABLE IF NOT EXISTS `quiz_answers_trans` (
   `lang` char(2) NOT NULL COMMENT 'language',
   `answer` text COMMENT 'text',
   PRIMARY KEY (`id`,`question_id`,`lang`),
-  KEY `FK_quiz_answers_trans_quiz_questions` (`question_id`),
+  KEY `idx1` (`question_id`),
   CONSTRAINT `FK_quiz_answers_trans_quiz_questions` FOREIGN KEY (`question_id`) REFERENCES `quiz_questions` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `FK_quiz_answers_trans_quiz_answers` FOREIGN KEY (`id`) REFERENCES `quiz_answers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT COMMENT='Translation for answers';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Translation for answers';
 
 DROP TABLE IF EXISTS `quiz_users`;
 CREATE TABLE IF NOT EXISTS `quiz_users` (
@@ -72,6 +72,7 @@ CREATE TABLE IF NOT EXISTS `quiz_users` (
   `ip` char(15) NOT NULL COMMENT 'user ip',
   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'timestamp when created',
   `finish_date` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00' COMMENT 'timestamp when user finished quiz',
+  `corrected` smallint(5) unsigned NOT NULL DEFAULT '0' COMMENT 'corrected answer count',
   PRIMARY KEY (`id`),
   KEY `idx1` (`quiz_id`),
   CONSTRAINT `FK_users_quiz_list` FOREIGN KEY (`quiz_id`) REFERENCES `quiz_list` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
@@ -80,12 +81,12 @@ CREATE TABLE IF NOT EXISTS `quiz_users` (
 DROP TABLE IF EXISTS `quiz_users_answers`;
 CREATE TABLE IF NOT EXISTS `quiz_users_answers` (
   `user_id` char(16) NOT NULL COMMENT 'user id',
+  `question_id` char(16) NOT NULL COMMENT 'question id',
   `answer_id` smallint(5) unsigned NOT NULL COMMENT 'answer id',
   `answer_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT 'answer date',
-  PRIMARY KEY (`user_id`,`answer_id`),
-  KEY `idx1` (`answer_id`),
-  CONSTRAINT `FK_quiz_users_answers_quiz_answers` FOREIGN KEY (`answer_id`) REFERENCES `quiz_answers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `FK_users_answers_users` FOREIGN KEY (`user_id`) REFERENCES `quiz_users` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`user_id`,`question_id`),
+  KEY `idx1` (`question_id`),
+  KEY `idx2` (`answer_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Users answers';
 
 INSERT INTO `quiz_list` (`id`, `description`, `active`) VALUES
