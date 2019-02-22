@@ -175,9 +175,19 @@ class Quiz extends ControllerAbstract
     public function start() : JsonResponse
     {
         $vars = $this->request->request->all();
+        if (!isset($vars['quiz']) || !isset($vars['name']) || $vars['quiz'] == '' || $vars['name'] == '') {
+            $response = new JsonResponse(['code' => JsonResponse::HTTP_BAD_REQUEST]);
+            return $response->send();
+        }
+
         $id = $this->getActiveQuizById($vars['quiz']);
         $ip = $this->request->getClientIp();
         $uid = $this->generateId();
+
+        if (!$id) {
+            $response = new JsonResponse(['code' => JsonResponse::HTTP_BAD_REQUEST]);
+            return $response->send();
+        }
 
         $user = new QuizUsers();
         $user->setId($uid);
