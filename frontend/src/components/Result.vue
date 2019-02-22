@@ -4,28 +4,40 @@
     <div class="message -left">
       <i class="nes-bcrikko"></i>
       <div class="nes-balloon from-left">
-        <p>{{name}} is completed quiz. You correct answered {{correctQuestion}}/{{totalQuestion}} questions.</p>
-        <p><button type="button" class="nes-btn is-warning" v-on:click="startAgain">Start again</button></p>
+        <p>{{name}} is completed quiz.</p>
+        <p>You correct answered {{correctCount}}/{{total}} questions.</p>
+        <p>Have a nice day!</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+import api from '../api/';
+
 export default {
   name: 'Result',
   data() {
     return {
-      name: 'my name',
-      correctQuestion: 3,
-      totalQuestion: 6,
+      correctCount: 0,
     };
   },
+  computed: {
+    ...mapGetters({
+        name: 'user/getName',
+        userId: 'user/getId',
+        total: 'questionList/getTotal',
+    })
+  },
   methods: {
-    startAgain() {
-      this.$parent.$data.isStarted = false;
-      this.$parent.$data.isCompleted = false;
+    async getResult() {
+      const response = await api.getResult(this.userId);
+      this.correctCount = response.data.correct;
     },
+  },
+  mounted() {
+    this.getResult();
   },
 };
 </script>

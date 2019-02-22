@@ -1,33 +1,52 @@
 <template>
   <div class="nes-container with-title is-centered">
-    <p class="title">{{question}}</p>
+    <p class="title">{{question.text}}</p>
     <div class="answers__block">
-      <div class="answer__btn nes-btn" v-for="item, key in answers" v-bind:key="key" v-on:click="saveAnswer(item.id)">{{item.text}}</div>
+      <div :class="{'answer__btn': true, 'nes-btn': true, 'is-primary': item.id === choice}" v-for="item in question.answer" :key="item.id" v-on:click="chooseAnswer(item.id)">{{item.text}}</div>
     </div>
     <div class="nextBtn__wrapper">
-      <button class="nes-btn is-success -right">Next --></button>
+      <button class="nes-btn is-success -right" v-on:click="nextQuestion()">Next --></button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
+import api from '../api/';
+
 export default {
   name: 'Questions',
-  data () {
+  data() {
     return {
-      question: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quos quaerat illum quidem officiis voluptates necessitatibus quam impedit at temporibus tempora?',
-      answers: [
-        {id: 'key1', text: 'Answer 1'},
-        {id: 'key2', text: 'Answer 2'},
-        {id: 'key3', text: 'Answer 3'},
-        {id: 'key4', text: 'Answer 4'},
-        {id: 'key5', text: 'Answer 5'},
-      ],
+      choice: '',
     }
   },
+    computed: {
+    ...mapGetters({
+        uid: 'user/getId',
+        question: 'questionList/getQuestion',
+        current: 'questionList/getCurrent',
+        total: 'questionList/getTotal',
+    })
+  },
+  mounted() {
+  },
   methods: {
-    saveAnswer: function (id) {
-      this.$parent.$data.isCompleted = true;
+    ...mapActions([
+      'questionList/nextQuestion',
+      'user/setComplete',
+    ]),
+    chooseAnswer: function (id) {
+      this.choice = id;
+    },
+    nextQuestion: function (id) {
+      api.saveAnswer(this.uid, this.question.id, this.choice);
+      this.$store.dispatch('questionList/nextQuestion');
+      if (this.total === this.current) {
+        this.$store.dispatch('user/setComplete');
+      }
+      this.question = this['questionList/getQuestion'];
+      this.choice = '';
     }
   },
 };

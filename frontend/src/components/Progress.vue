@@ -8,7 +8,7 @@
 export default {
   name: 'ProgressBar',
   props: {
-    progress: String,
+    progress: Number,
   },
 };
 </script>

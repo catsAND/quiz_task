@@ -5,16 +5,17 @@
     <div class="mainBlock__wrapper">
       <div class="content__block">
         <h1>Quiz</h1>
-        <StartBlock v-if="!isStarted"/>
-        <QuestionBlock v-if="isStarted && !isCompleted"/>
-        <ResultBlock v-if="isStarted && isCompleted"/>
-        <ProgressBar progress="20" v-if="isStarted"/>
+        <StartBlock v-if="getUserId === ''"/>
+        <QuestionBlock v-if="getUserId !== '' && !quizCompleted"/>
+        <ResultBlock v-if="quizCompleted"/>
+        <ProgressBar :progress=progress v-if="getUserId !== ''"/>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex';
 import StartBlock from './components/Start.vue';
 import QuestionBlock from './components/Question.vue';
 import ResultBlock from './components/Result.vue';
@@ -22,21 +23,18 @@ import ProgressBar from './components/Progress.vue';
 
 export default {
   name: 'app',
-  data() {
-    return {
-      ping: 'pong',
-      isStarted: false,
-      isCompleted: false,
-    };
+  computed: {
+    ...mapGetters({
+        getUserId: 'user/getId',
+        quizCompleted: 'user/isComplete',
+        progress: 'questionList/getProgress',
+    })
   },
   components: {
     StartBlock,
     QuestionBlock,
     ResultBlock,
     ProgressBar,
-  },
-  mounted() {
-    console.log('1');
   },
 };
 </script>
