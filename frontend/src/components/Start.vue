@@ -27,7 +27,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import api from '../api/';
+import api from '../api';
 
 export default {
   name: 'Start',
@@ -45,8 +45,8 @@ export default {
   },
   computed: {
     ...mapGetters({
-        quizList: 'quizList/getAll',
-        getQuizById: 'quizList/getById',
+      quizList: 'quizList/getAll',
+      getQuizById: 'quizList/getById',
     }),
   },
   methods: {
@@ -59,7 +59,7 @@ export default {
     ]),
     getQuizList() {
       api.getQuizList()
-        .then((response) => response.data)
+        .then(response => response.data)
         .then((data) => {
           this.$store.dispatch('quizList/save', data);
         });
@@ -88,7 +88,11 @@ export default {
         this.$store.dispatch('user/saveId', id);
         this.$store.dispatch('user/saveName', this.name);
         this.$store.dispatch('user/saveQuizId', this.quiz);
+
+        return true;
       }
+
+      return false;
     },
   },
 };

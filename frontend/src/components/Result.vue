@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
-import api from '../api/';
+import { mapGetters } from 'vuex';
+import api from '../api';
 
 export default {
   name: 'Result',
@@ -25,9 +25,9 @@ export default {
   },
   computed: {
     ...mapGetters({
-        name: 'user/getName',
-        userId: 'user/getId',
-        total: 'questionList/getTotal',
+      name: 'user/getName',
+      userId: 'user/getId',
+      total: 'questionList/getTotal',
     }),
   },
   methods: {

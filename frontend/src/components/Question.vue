@@ -13,7 +13,7 @@
 
 <script>
 import { mapGetters, mapActions } from 'vuex';
-import api from '../api/';
+import api from '../api';
 
 export default {
   name: 'Questions',
@@ -25,10 +25,10 @@ export default {
   },
   computed: {
     ...mapGetters({
-        uid: 'user/getId',
-        question: 'questionList/getQuestion',
-        current: 'questionList/getCurrent',
-        total: 'questionList/getTotal',
+      uid: 'user/getId',
+      question: 'questionList/getQuestion',
+      current: 'questionList/getCurrent',
+      total: 'questionList/getTotal',
     }),
   },
   methods: {
@@ -36,11 +36,11 @@ export default {
       'questionList/nextQuestion',
       'user/setComplete',
     ]),
-    chooseAnswer: function (id) {
+    chooseAnswer(id) {
       this.choice = id;
       this.error = false;
     },
-    nextQuestion: function (id) {
+    nextQuestion() {
       if (this.choice === '') {
         this.error = true;
         return false;
@@ -55,6 +55,8 @@ export default {
 
       this.question = this['questionList/getQuestion'];
       this.choice = '';
+
+      return true;
     },
   },
 };

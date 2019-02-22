@@ -26,7 +26,7 @@ const mutations = {
 const getters = {
   getTotal: state => state.total,
   getCurrent: state => state.current,
-  getProgress: state => state.total > 0 ? state.current / state.total * 100 : 0,
+  getProgress: state => (state.total > 0 ? state.current / state.total * 100 : 0),
   getQuestion: (state) => {
     if (state.total === state.current) {
       return {};

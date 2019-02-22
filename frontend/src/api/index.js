@@ -6,7 +6,7 @@ function get(method) {
       .then(r => r.json())
       .then((r) => {
         if (r.code !== 200) {
-          return reject('Server returned ' + r.code + ' code');
+          return reject(`Server returned ${r.code} code`);
         }
         return resolve(r);
       })
@@ -15,7 +15,7 @@ function get(method) {
 }
 function post(method, data) {
   const formData = new FormData();
-  for (let key of Object.keys(data)) {
+  for (const key of Object.keys(data)) {
     formData.append(key, data[key]);
   }
 
@@ -36,8 +36,8 @@ async function getQuizList() {
 
 async function startQuiz(name, quiz) {
   const response = await post('/quiz/start', {
-    name: name,
-    quiz: quiz,
+    name,
+    quiz,
   });
   return response.data.id;
 }
@@ -48,7 +48,7 @@ async function getQuestionByQuizId(id) {
 
 async function saveAnswer(uid, questionId, answerId) {
   const response = await post('/quiz/answer', {
-    uid: uid,
+    uid,
     qid: questionId,
     id: answerId,
   });

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex';
+import { mapGetters } from 'vuex';
 import StartBlock from './components/Start.vue';
 import QuestionBlock from './components/Question.vue';
 import ResultBlock from './components/Result.vue';
@@ -23,10 +23,10 @@ export default {
   name: 'app',
   computed: {
     ...mapGetters({
-        getUserId: 'user/getId',
-        quizCompleted: 'user/isComplete',
-        progress: 'questionList/getProgress',
-    })
+      getUserId: 'user/getId',
+      quizCompleted: 'user/isComplete',
+      progress: 'questionList/getProgress',
+    }),
   },
   components: {
     StartBlock,
