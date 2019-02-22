@@ -18,6 +18,6 @@ export default {
   margin-top: 20px;
 }
 .nes-progress {
-  width: calc(100% - 8px);
+  width: calc(100% - 8px) !important;
 }
 </style>
