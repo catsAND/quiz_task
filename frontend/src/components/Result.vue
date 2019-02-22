@@ -28,7 +28,7 @@ export default {
         name: 'user/getName',
         userId: 'user/getId',
         total: 'questionList/getTotal',
-    })
+    }),
   },
   methods: {
     async getResult() {
@@ -45,7 +45,6 @@ export default {
 <style lang="scss">
   .nes-balloon {
     max-width: 420px;
-
   }
 
   @media (max-width: 380px) {

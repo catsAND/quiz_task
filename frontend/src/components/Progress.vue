@@ -17,4 +17,7 @@ export default {
 .progress__wrapper {
   margin-top: 20px;
 }
+.nes-progress {
+  width: calc(100% - 8px);
+}
 </style>

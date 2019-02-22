@@ -7,6 +7,7 @@
     <div class="nextBtn__wrapper">
       <button class="nes-btn is-success -right" v-on:click="nextQuestion()">Next --></button>
     </div>
+    <p v-if="error" style="color: red;">Please choose answer</p>
   </div>
 </template>
 
@@ -19,17 +20,16 @@ export default {
   data() {
     return {
       choice: '',
-    }
+      error: false,
+    };
   },
-    computed: {
+  computed: {
     ...mapGetters({
         uid: 'user/getId',
         question: 'questionList/getQuestion',
         current: 'questionList/getCurrent',
         total: 'questionList/getTotal',
-    })
-  },
-  mounted() {
+    }),
   },
   methods: {
     ...mapActions([
@@ -38,16 +38,24 @@ export default {
     ]),
     chooseAnswer: function (id) {
       this.choice = id;
+      this.error = false;
     },
     nextQuestion: function (id) {
+      if (this.choice === '') {
+        this.error = true;
+        return false;
+      }
+
       api.saveAnswer(this.uid, this.question.id, this.choice);
       this.$store.dispatch('questionList/nextQuestion');
       if (this.total === this.current) {
         this.$store.dispatch('user/setComplete');
+        return true;
       }
+
       this.question = this['questionList/getQuestion'];
       this.choice = '';
-    }
+    },
   },
 };
 </script>

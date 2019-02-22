@@ -1,5 +1,5 @@
 const state = {
-  list: []
+  list: [],
 };
 
 const actions = {
@@ -15,10 +15,8 @@ const mutations = {
 };
 
 const getters = {
-  getById: (state) => (id) => {
-    return state.list.filter((val) => val.id === id);
-  },
-  getAll: (state) => state.list,
+  getById: state => id => state.list.filter(val => val.id === id),
+  getAll: state => state.list,
 };
 
 export default {
@@ -27,4 +25,4 @@ export default {
   actions,
   mutations,
   getters,
-}
+};

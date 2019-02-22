@@ -47,7 +47,7 @@ export default {
     ...mapGetters({
         quizList: 'quizList/getAll',
         getQuizById: 'quizList/getById',
-    })
+    }),
   },
   methods: {
     ...mapActions([
@@ -55,7 +55,7 @@ export default {
       'user/saveId',
       'user/saveQuizId',
       'user/saveName',
-      'questionList/save'
+      'questionList/save',
     ]),
     getQuizList() {
       api.getQuizList()
@@ -89,8 +89,8 @@ export default {
         this.$store.dispatch('user/saveName', this.name);
         this.$store.dispatch('user/saveQuizId', this.quiz);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

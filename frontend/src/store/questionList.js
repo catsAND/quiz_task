@@ -8,7 +8,7 @@ const actions = {
   save({ commit }, payload) {
     commit('push', payload);
   },
-  nextQuestion({ commit },) {
+  nextQuestion({ commit }) {
     commit('increment');
   },
 };
@@ -19,20 +19,20 @@ const mutations = {
     state.total = payload.length;
   },
   increment(state) {
-    state.current++;
+    state.current += 1;
   },
 };
 
 const getters = {
-  getTotal: (state) => state.total,
-  getCurrent: (state) => state.current,
-  getProgress: (state) => state.total > 0 ? state.current / state.total * 100 : 0,
+  getTotal: state => state.total,
+  getCurrent: state => state.current,
+  getProgress: state => state.total > 0 ? state.current / state.total * 100 : 0,
   getQuestion: (state) => {
     if (state.total === state.current) {
       return {};
     }
 
-    return state.list[state.current]
+    return state.list[state.current];
   },
 };
 
@@ -42,4 +42,4 @@ export default {
   actions,
   mutations,
   getters,
-}
+};

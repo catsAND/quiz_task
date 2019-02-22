@@ -17,7 +17,7 @@ const actions = {
   },
   setComplete({ commit }) {
     commit('complete');
-  }
+  },
 };
 
 const mutations = {
@@ -32,14 +32,14 @@ const mutations = {
   },
   complete(state) {
     state.complete = true;
-  }
+  },
 };
 
 const getters = {
-  getId: (state) => state.id,
-  isComplete: (state) => state.complete,
-  getName: (state) => state.name,
-  getQuizId: (state) => state.quizId,
+  getId: state => state.id,
+  isComplete: state => state.complete,
+  getName: state => state.name,
+  getQuizId: state => state.quizId,
 };
 
 export default {
@@ -48,4 +48,4 @@ export default {
   actions,
   mutations,
   getters,
-}
+};
