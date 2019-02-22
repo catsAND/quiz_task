@@ -1,5 +1,7 @@
 # quiz_task
 
+# **DEMO http://darkpay.io/quiz/dist/**
+
 ## Main objective
 Your task is to build a simple quiz where user enters his name, picks a test, gives the answers and finally gets the results.
 The technologies you have to use are: PHP, MySQL, HTML, CSS, JavaScript. PHP code must be object oriented. As of the design and UX perspective - it’s all up to you and your imagination.
